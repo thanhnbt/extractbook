@@ -1,0 +1,62 @@
+# ============================================
+# Book Knowledge Extractor — Configuration
+# Memory Mining Mode (no file upload)
+# ============================================
+
+book:
+  title: "Thinking, Fast and Slow"     # ← THAY TÊN SÁCH VÀO ĐÂY
+  author: "Daniel Kahneman"            # ← THAY TÊN TÁC GIẢ
+  language: "en"                        # Ngôn ngữ gốc của sách
+  type: "non-fiction"                   # non-fiction | fiction | technical | textbook
+
+gemini:
+  model: "gemini-2.5-pro"
+  api_key_env: "GEMINI_API_KEY"
+  
+  # Cho Memory Mining: temperature thấp hơn = ít bịa hơn
+  extraction_temperature: 0.2         # Phase 0-2: factual recall
+  synthesis_temperature: 0.5          # Phase 3-4: creative synthesis
+  
+  max_output_tokens: 8192
+  retry_attempts: 3
+
+pipeline:
+  phases:
+    recon: true              # Phase 0: Trinh sát memory depth
+    skeleton: true           # Phase 1: TOC + thesis
+    deep_dive: true          # Phase 2: Từng chương
+    cross_reference: true    # Phase 3: Patterns
+    synthesis: true          # Phase 4: Deliverables
+    verify: true             # Phase 5: Quality control
+
+  # Deep dive config
+  deep_dive:
+    rounds_per_chapter: 3    # 1-3 lượt đào per chapter
+    min_words_per_chapter: 800
+    dimensions:              # Bật/tắt từng loại prompt
+      summary: true
+      quotes: true
+      examples: true
+      terminology: true
+
+  # Output
+  output_language: "vi"      # Output bằng tiếng Việt
+  output_formats:
+    - markdown_wiki
+    - cheat_sheet
+    - flashcards
+
+# Anti-hallucination
+quality:
+  require_confidence_tags: true      # Bắt buộc 🟢🟡🔴
+  web_verify_red_claims: true        # Auto web search cho 🔴
+  web_verify_sample_yellow: 0.3      # Verify 30% claim 🟡
+  cross_prompt_check: true           # Hỏi cùng fact 2 cách
+  consistency_threshold: 0.8         # Ngưỡng consistency
+
+# Memory & caching  
+memory:
+  enable_cache: true
+  cache_dir: "memory/"
+  track_confidence: true             # Lưu confidence map
+  track_consistency: true            # Lưu cross-check results

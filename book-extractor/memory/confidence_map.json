@@ -1,0 +1,19 @@
+{
+  "book": {
+    "title": null,
+    "author": null,
+    "recon_familiarity": null,
+    "estimated_coverage": null
+  },
+  "chapters": {},
+  "confidence_summary": {
+    "green_count": 0,
+    "yellow_count": 0,
+    "red_count": 0,
+    "unknown_count": 0,
+    "green_percent": 0
+  },
+  "verified_claims": [],
+  "hallucinations_found": [],
+  "gaps": []
+}
